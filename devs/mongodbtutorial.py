@@ -11,7 +11,7 @@ post2 = {"_id": 2, "name":"jone", "score":7}
 
 # collection.insert_one(post1)
 
-# collection.insert_many([post1, post2])
+collection.insert_many([post1, post2])
 
 # result = collection.find({"name":"jone"})
 
@@ -37,7 +37,3 @@ post2 = {"_id": 2, "name":"jone", "score":7}
 # result = collection.update_one({"_id":1},{"$set":{"age":56}}) This will add a new field
 
 # result = collection.update_one({"_id":1},{"$inc":{"age":10}}) This will 10 to age
-
-post_count = collection.count_documents({})
-
-print(post_count)
