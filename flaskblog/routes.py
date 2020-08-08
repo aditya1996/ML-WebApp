@@ -53,3 +53,8 @@ def deletedb():
     ans = list(collection.find({}))
 
     return render_template('database.html', ans=ans)
+
+@app.route("/mlinfo")
+def mlinfo():
+
+    return render_template('mlinfo.html')

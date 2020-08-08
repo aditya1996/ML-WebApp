@@ -22,22 +22,24 @@
                   <a class="nav-link" href="{{ url_for('home') }}">Home</a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link" href="{{ url_for('database') }}">Database</a>
-                </li>
-                <li class="nav-item active">
-                  <a class="nav-link" href="#">ML Models</a>
+                  <a class="nav-link" href="{{ url_for('mlinfo') }}">Getting Started</a>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Actions
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ url_for('loaddb') }}">Populate Mongo DB</a>
-                    <a class="dropdown-item" href="{{ url_for('deletedb') }}">Delete Mongo DB</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Information about ML Models</a>
+                    <a class="dropdown-item" href="{{ url_for('loaddb') }}">Populate data into Mongo DB</a>
+                    <a class="dropdown-item" href="{{ url_for('deletedb') }}">Delete data from Mongo DB</a>
                   </div>
                 </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="{{ url_for('database') }}">Database</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Apply ML</a>
+                </li>
+                
               </ul>
             </div>
         </nav>

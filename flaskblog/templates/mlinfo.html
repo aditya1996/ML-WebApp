@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+              <h1 class="display-4">Let's see what models we will use for Machine Learning!!</h1>
+              <br>
+              <div class="row">
+                <div class="col-4">
+                  <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Multiple Regression</a>
+                    <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Polynomail Regression</a>
+                    <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">SVM</a>
+                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Decision Tree</a>
+                    <a class="list-group-item list-group-item-action" id="list-settings1-list" data-toggle="list" href="#list-settings1" role="tab" aria-controls="settings1">Random Forest</a>
+                  </div>
+                </div>
+                <div class="col-8">
+                  <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">Multiple linear regression is fun because it looks at the relationships within a bunch of information. Instead of just looking at how one thing relates to another thing (simple linear regression), you can look at the relationship between a lot of different things and the thing you want to predict.</div>
+                    <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">What if the data points had the following non-linearity making the linear model giving an error in predictions due to non-linearity? In this case, we have to build a polynomial relationship which will accurately fit the data points in the given plot.</div>
+                    <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">Support Vector Machine can also be used as a regression method, maintaining all the main features that characterize the algorithm (maximal margin). The Support Vector Regression (SVR) uses the same principles as the SVM for classification, with only a few minor differences. First of all, because output is a real number it becomes very difficult to predict the information at hand, which has infinite possibilities. In the case of regression, a margin of tolerance (epsilon) is set in approximation to the SVM which would have already requested from the problem. But besides this fact, there is also a more complicated reason, the algorithm is more complicated therefore to be taken in consideration. </div>
+                    <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">Decision tree builds regression or classification models in the form of a tree structure. It breaks down a dataset into smaller and smaller subsets while at the same time an associated decision tree is incrementally developed.</div>
+                    <div class="tab-pane fade" id="list-settings1" role="tabpanel" aria-labelledby="list-settings1-list">Random forest is a Supervised Learning algorithm which uses ensemble learning method for regression.It operates by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees.</div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <a class="btn btn-outline-dark btn-lg" href="#" role="button">Load data from Mongo DB by using Actions Dropdown</a>
+        </div>
+        
+{% endblock content %}
