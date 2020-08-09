@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Multiple Regression</h1>
+    <p class="lead">Let see our predictions</p>
+    <p class='lead'>Here is our r-squared value: {{ r2_mlrp }}</p>
+</div>
+
+<br>
+<div class="row justify-content-center">
+<div class="col-auto">
+<table class="table table-responsive table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Predicted Insurance Cost</th>
+      <th scope="col">Actual Insurance Value</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in ls_mplr %}
+    <tr>
+      <td>{{ i[0] }}</td>
+      <td>{{ i[1] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Decision Tree Regression</h1>
+    <p class="lead">Let see our predictions</p>
+    <p class='lead'>Here is our r-squared value: {{ r2_dt }}</p>
+</div>
+
+<br>
+<div class="row justify-content-center">
+<div class="col-auto">
+<table class="table table-responsive table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Predicted Insurance Cost</th>
+      <th scope="col">Actual Insurance Value</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in ls_dt %}
+    <tr>
+      <td>{{ i[0] }}</td>
+      <td>{{ i[1] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Random Forest Regression</h1>
+    <p class="lead">Let see our predictions</p>
+    <p class='lead'>Here is our r-squared value: {{ r2_rf }}</p>
+</div>
+
+<br>
+<div class="row justify-content-center">
+<div class="col-auto">
+<table class="table table-responsive table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Predicted Insurance Cost</th>
+      <th scope="col">Actual Insurance Value</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in ls_rf %}
+    <tr>
+      <td>{{ i[0] }}</td>
+      <td>{{ i[1] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+        
+{% endblock content %}

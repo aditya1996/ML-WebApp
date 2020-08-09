@@ -3,6 +3,11 @@ from flaskblog import app
 import pandas as pd
 import pymongo
 from pymongo import MongoClient
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
 
 
 @app.route("/")
@@ -23,7 +28,7 @@ def database():
 @app.route("/loaddb")
 def loaddb():
     # Converting CSV file to pandas dataframe
-    df = pd.read_csv('vgdata.csv')
+    df = pd.read_csv('/Users/adityatiwari/Desktop/Python/ML-WebApp/dataset.csv')
 
     # Connecting to Mongo DB
     cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/test?retryWrites=true&w=majority")
@@ -58,3 +63,65 @@ def deletedb():
 def mlinfo():
 
     return render_template('mlinfo.html')
+
+@app.route("/applyml")
+def applyml():
+
+    try:
+
+        cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/test?retryWrites=true&w=majority")
+        db = cluster["test"]
+        collection = db["test"]
+
+        res = list(collection.find({}))
+        cdf = pd.DataFrame(res)
+        df = cdf[['smoker','age','bmi','children','sex','charges']]
+
+        X = df.iloc[:, :-1].values
+        y = df.iloc[:, -1].values
+
+        le = LabelEncoder()
+        X[:,0] = le.fit_transform(X[:,0])
+        X[:,4] = le.fit_transform(X[:,4])
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
+        
+        # Applying Multiple Regression
+        from sklearn.linear_model import LinearRegression
+        regressor_mlpr = LinearRegression()
+        regressor_mlpr.fit(X_train, y_train)
+
+        y_pred_mplr = regressor_mlpr.predict(X_test)
+        np.set_printoptions(precision=2)
+        result_mplr = np.concatenate((y_pred_mplr.reshape(len(y_pred_mplr),1), y_test.reshape(len(y_test),1)),1)
+        ls_mplr = list(result_mplr[0:10,:])
+
+        r2_mlrp = r2_score(y_test, y_pred_mplr)
+
+        # Applying Decision Tree Regresssion
+        from sklearn.tree import DecisionTreeRegressor
+        regressor_dt = DecisionTreeRegressor(random_state = 0)
+        regressor_dt.fit(X_train, y_train)
+
+        y_pred_dt = regressor_dt.predict(X_test)
+        result_dt = np.concatenate((y_pred_dt.reshape(len(y_pred_dt),1), y_test.reshape(len(y_test),1)),1)
+        ls_dt = list(result_dt[0:10,:])
+
+        r2_dt = r2_score(y_test, y_pred_dt)
+
+        # Applying Random Forest Regression
+        from sklearn.ensemble import RandomForestRegressor
+        regressor_rf = RandomForestRegressor(n_estimators = 10, random_state = 0)
+        regressor_rf.fit(X_train, y_train)
+
+        y_pred_rf = regressor_rf.predict(X_test)
+        result_rf = np.concatenate((y_pred_rf.reshape(len(y_pred_rf),1), y_test.reshape(len(y_test),1)),1)
+        ls_rf = list(result_rf[0:10,:])
+
+        r2_rf = r2_score(y_test, y_pred_rf)
+
+        return render_template('applyml.html',ls_mplr=ls_mplr,r2_mlrp=r2_mlrp,ls_dt=ls_dt,r2_dt=r2_dt,ls_rf=ls_rf,r2_rf=r2_rf)
+
+    except:
+
+        return render_template('nodata.html')
