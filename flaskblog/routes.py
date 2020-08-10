@@ -3,7 +3,6 @@ from flaskblog import app
 import pandas as pd
 import pymongo
 from pymongo import MongoClient
-import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
@@ -18,9 +17,9 @@ def home():
 @app.route("/database")
 def database():
     # Connecting to Mongo DB
-    cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/test?retryWrites=true&w=majority")
-    db = cluster["test"]
-    collection = db["test"]
+    cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/datasets?retryWrites=true&w=majority")
+    db = cluster["datasets"]
+    collection = db["insurance"]
     ans = list(collection.find({}))
 
     return render_template('database.html', ans=ans)
@@ -31,9 +30,9 @@ def loaddb():
     df = pd.read_csv('/Users/adityatiwari/Desktop/Python/ML-WebApp/dataset.csv')
 
     # Connecting to Mongo DB
-    cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/test?retryWrites=true&w=majority")
-    db = cluster["test"]
-    collection = db["test"]
+    cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/datasets?retryWrites=true&w=majority")
+    db = cluster["datasets"]
+    collection = db["insurance"]
 
     # Converting dataframe to dictionary and adding '_id'
     dic = df.to_dict('records')
@@ -50,9 +49,9 @@ def loaddb():
 @app.route("/deletedb")
 def deletedb():
     # Connecting to Mongo DB
-    cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/test?retryWrites=true&w=majority")
-    db = cluster["test"]
-    collection = db["test"]
+    cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/datasets?retryWrites=true&w=majority")
+    db = cluster["datasets"]
+    collection = db["insurance"]
     collection.delete_many({})
 
     ans = list(collection.find({}))
@@ -69,9 +68,9 @@ def applyml():
 
     try:
 
-        cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/test?retryWrites=true&w=majority")
-        db = cluster["test"]
-        collection = db["test"]
+        cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/datasets?retryWrites=true&w=majority")
+        db = cluster["datasets"]
+        collection = db["insurance"]
 
         res = list(collection.find({}))
         cdf = pd.DataFrame(res)
