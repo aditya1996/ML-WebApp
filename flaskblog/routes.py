@@ -27,7 +27,7 @@ def database():
 @app.route("/loaddb")
 def loaddb():
     # Converting CSV file to pandas dataframe
-    df = pd.read_csv('./ML-WebApp/dataset.csv')
+    df = pd.read_csv('dataset.csv')
 
     # Connecting to Mongo DB
     cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/datasets?retryWrites=true&w=majority")
