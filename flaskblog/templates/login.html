@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block content %}
+<br>
+<br>
+            <div class="container">
+              <h1 class="display-4">Login to get started</h1>
+              <p class="lead">You need to be authenticated to view ML Data</p>
+        
+              <form method="POST" action="">
+                {{ form.hidden_tag() }}
+
+                <div class="form-group">
+                  {{ form.email.label(class="form-control-label") }}
+                  {% if form.email.errors %}
+                  {{ form.email(class="form-control form-control-label is-invalid") }}
+                  <div class="invalid-feeback">
+                    {% for error in form.email.errors %}
+                      <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                  {% else %}
+                  {{ form.email(class="form-control form-control-label") }}
+                  {% endif %}
+                </div>
+
+                <div class="form-group">
+                  {{ form.password.label(class="form-control-label") }}
+                  {% if form.password.errors %}
+                  {{ form.password(class="form-control form-control-label is-invalid") }}
+                  <div class="invalid-feeback">
+                    {% for error in form.password.errors %}
+                      <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                  {% else %}
+                  {{ form.password(class="form-control form-control-label") }}
+                  {% endif %}
+                </div>
+
+                <div class="form-check">
+                        {{ form.remember(class="form-check-input") }}
+                        {{ form.remember.label(class="form-check-label") }}
+                </div>
+                <br>
+                
+                <div class="form-group">
+                  {{ form.submit(class="btn btn-success") }}
+                </div>
+                <hr>
+                <small class="text-muted">
+                        <a href="#">Forgot Password ?</a>
+                </small>
+                <br>
+                <small class="text-muted">
+                        Need an Account ?<a href="{{ url_for('register') }}"> Sign Up Now</a>
+                </small>
+        </form>
+        
+{% endblock content %}

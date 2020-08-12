@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+<br>
+<br>
+<div class="container">
+    <h1 class="display-4">This is who you are</h1>
+    <p class="lead">Let's see some quick info</p>
+    <div class="card text-white bg-dark mb-3" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">{{ current_user.username }}</h5>
+          <h6 class="card-subtitle mb-2">{{ current_user.email }}</h6>
+          <p class="card-text">You are authenticated to use:</p>
+          <p class="card-text">Insurance Database</p>
+        </div>
+    </div> 
+</div>
+     
+{% endblock content %}
