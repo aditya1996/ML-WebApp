@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
 from flaskblog.models import User
 
 class RegistrationForm(FlaskForm):
@@ -30,3 +30,11 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+class Prediction(FlaskForm):
+    age = IntegerField('Age', validators=[DataRequired(), NumberRange(min=15, max=80)])
+    sex = StringField('Sex', validators=[DataRequired()])
+    bmi = IntegerField('BMI', validators=[DataRequired(), NumberRange(min=20, max=40)])
+    child = StringField('Children', validators=[DataRequired()])
+    smoke = StringField('Smoker', validators=[DataRequired()])
+    submit = SubmitField('Predict')

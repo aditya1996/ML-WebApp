@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect
 from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm
+from flaskblog.forms import RegistrationForm, LoginForm, Prediction
 from flaskblog.models import User
 from flask_login import login_user, current_user, logout_user, login_required
 import pandas as pd
@@ -116,7 +116,7 @@ def mlinfo():
     return render_template('mlinfo.html')
 
 
-@app.route("/applyml")
+@app.route("/applyml", methods=['GET','POST'])
 @login_required
 def applyml():
 
@@ -173,8 +173,66 @@ def applyml():
 
         r2_rf = r2_score(y_test, y_pred_rf)
 
-        return render_template('applyml.html',ls_mplr=ls_mplr,r2_mlrp=r2_mlrp,ls_dt=ls_dt,r2_dt=r2_dt,ls_rf=ls_rf,r2_rf=r2_rf)
+        # Predicting User provided results
+        form = Prediction()  
+        
+        if form.validate_on_submit():
+            age = form.age.data
+            sex = form.sex.data
+            bmi = form.bmi.data
+            children = form.child.data
+            smoker = form.smoke.data
+            result = regressor_rf.predict([[smoker,age,bmi,children,sex]])
+            pred = int(result)
+            return render_template('applyml.html',ls_mplr=ls_mplr,r2_mlrp=r2_mlrp,ls_dt=ls_dt,r2_dt=r2_dt,
+            ls_rf=ls_rf,r2_rf=r2_rf, form=form, pred=pred)
+
+        return render_template('applyml.html',ls_mplr=ls_mplr,r2_mlrp=r2_mlrp,ls_dt=ls_dt,r2_dt=r2_dt,
+            ls_rf=ls_rf,r2_rf=r2_rf, form=form)
 
     except:
 
         return render_template('nodata.html')
+
+@app.route("/predict", methods=['GET','POST'])
+@login_required
+def predict():
+ 
+    cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/datasets?retryWrites=true&w=majority")
+    db = cluster["datasets"]
+    collection = db["insurance"]
+
+    res = list(collection.find({}))
+    cdf = pd.DataFrame(res)
+    df = cdf[['smoker','age','bmi','children','sex','charges']]
+
+    X = df.iloc[:, :-1].values
+    y = df.iloc[:, -1].values
+
+    le = LabelEncoder()
+    X[:,0] = le.fit_transform(X[:,0])
+    X[:,4] = le.fit_transform(X[:,4])
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
+
+    # Applying Random Forest Regression
+    from sklearn.ensemble import RandomForestRegressor
+    regressor_rf = RandomForestRegressor(n_estimators = 10, random_state = 0)
+    regressor_rf.fit(X_train, y_train)
+
+    # Predicting User provided results
+    form = Prediction()  
+        
+    if form.validate_on_submit():
+        age = form.age.data
+        sex = form.sex.data
+        bmi = form.bmi.data
+        children = form.child.data
+        smoker = form.smoke.data
+        result = regressor_rf.predict([[smoker,age,bmi,children,sex]])
+        pred = int(result)
+        return render_template('predict.html', form=form, pred=pred)
+
+    return render_template('predict.html',form=form)
+
+
