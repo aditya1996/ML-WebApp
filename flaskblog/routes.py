@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect
-from flaskblog import app, db, bcrypt
+from flaskblog import app, db, bcrypt, mongo
 from flaskblog.forms import RegistrationForm, LoginForm, Prediction
 from flaskblog.models import User
 from flask_login import login_user, current_user, logout_user, login_required
@@ -64,10 +64,8 @@ def account():
 @login_required
 def database():
     # Connecting to Mongo DB
-    cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/datasets?retryWrites=true&w=majority")
-    db = cluster["datasets"]
-    collection = db["insurance"]
-    ans = list(collection.find({}))
+    collection = mongo.db.insurance.find({})
+    ans = list(collection)
 
     return render_template('database.html', ans=ans)
 
@@ -79,9 +77,7 @@ def loaddb():
     df = pd.read_csv('dataset.csv')
 
     # Connecting to Mongo DB
-    cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/datasets?retryWrites=true&w=majority")
-    db = cluster["datasets"]
-    collection = db["insurance"]
+    collection = mongo.db.insurance
 
     # Converting dataframe to dictionary and adding '_id'
     dic = df.to_dict('records')
@@ -100,9 +96,7 @@ def loaddb():
 @login_required
 def deletedb():
     # Connecting to Mongo DB
-    cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/datasets?retryWrites=true&w=majority")
-    db = cluster["datasets"]
-    collection = db["insurance"]
+    collection = mongo.db.insurance
     collection.delete_many({})
 
     ans = list(collection.find({}))
@@ -122,9 +116,8 @@ def applyml():
 
     try:
 
-        cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/datasets?retryWrites=true&w=majority")
-        db = cluster["datasets"]
-        collection = db["insurance"]
+        # Connecting to Mongo DB
+        collection = mongo.db.insurance
 
         res = list(collection.find({}))
         cdf = pd.DataFrame(res)
@@ -198,9 +191,8 @@ def applyml():
 @login_required
 def predict():
  
-    cluster = MongoClient("mongodb+srv://admin:adminrocks@db01.i7iwq.gcp.mongodb.net/datasets?retryWrites=true&w=majority")
-    db = cluster["datasets"]
-    collection = db["insurance"]
+    # Connecting to Mongo DB
+    collection = mongo.db.insurance
 
     res = list(collection.find({}))
     cdf = pd.DataFrame(res)
